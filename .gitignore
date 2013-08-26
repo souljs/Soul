@@ -1,5 +1,4 @@
 node_modules
-
 bin
-src/
+src
 dist/Soul.client.js
