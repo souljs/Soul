@@ -1,0 +1,23 @@
+{
+	"name": "soul",
+	"version": "0.0.1",
+	"keywords": ["mv*"],
+	"description": "JavaScript Framework",
+	"devDependencies": {
+		"grunt": "~0.4.0",
+		"grunt-contrib-watch": "~0.4.0",
+		"grunt-contrib-jshint": "~0.2.0",
+		"grunt-contrib-uglify": "~0.1",
+		"grunt-contrib-concat": "~0.3"
+	},
+	"main": "src/Soul.js",
+	"scripts": {
+		"test": "grunt test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/souljs/soul.git"
+	},
+	"author": "Konstantin Lebedev <ibnRubaXa@gmail.com>",
+	"license": "MIT"
+}

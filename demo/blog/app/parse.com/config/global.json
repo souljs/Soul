@@ -1,0 +1,11 @@
+{
+    "applications": {
+        "Soul.Blog": {
+            "applicationId": "zm7HTaHs6pEy4L8T1RBqiblLFEytpmZnhL2oIL4V", 
+            "masterKey": "JQNSO4NV4rqe831QiKkOjKwiKZanFf4hzSa1kgv1"
+        }, 
+        "_default": {
+            "link": "Soul.Blog"
+        }
+    }
+}

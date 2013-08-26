@@ -1,0 +1,61 @@
+// Tabs
+&auth-tabs = .tabs {
+	class: "tabs-{{ctx.mod}}"
+	for (path, text) in ctx.items {
+		a.tab {
+			class: { "tab_active": ctx.path == path }
+			href: ctx.path != path ? "#!"+path : null
+			| {{text}}
+		}
+	}
+}
+
+
+// Auth form
+.form-login > form.form {
+	x-submit: ctx.onSubmit( el.screen.value );
+	x-disabled: model.disabled
+
+	&auth-tabs {
+		mod: "main"
+		x-path: ctx.router.request.path
+		x-items: ctx.tabs
+	}
+
+	if ctx.router.request.path == ctx.router.getUrl("signup") {
+		input[type="hidden"][name="screen"][value="signup"] {}
+
+		fieldset {
+			&inp { name: "Username", x-value: model.name, autofocus: true }
+			&inp { name: "Email", x-value: model.email }
+			&inp { name: "Password", x-value: model.password, suggest: "off" }
+			&inp { name: "Photo url", x-value: model.photo_url, suggest: "off" }
+		}
+
+		.foot > &btn { value: "Sign up to Soul", mod: "success" }
+	}
+	else if ctx.router.request.path == ctx.router.getUrl("forgot") {
+		input[type="hidden"][name="screen"][value="forgot"] {}
+
+		fieldset {
+			h3 | Restore password:
+
+			&inp { name: "Email", x-value: model.email, autofocus: true }
+		}
+
+		.foot > &btn { value: "Send", mod: "success" }
+	}
+	else {
+		input[type="hidden"][name="screen"][value="login"] {}
+
+		fieldset {
+			&inp { name: "Email", x-value: model.email, autofocus: true }
+			&inp { name: "Password", x-value: model.password }
+		}
+
+		.foot {
+			.right > a.link[href="#!{{ctx.router.getUrl('forgot')}}"] | Forgot?
+			.left > &btn { value: "Enter", mod: "success" }
+		}
+	}
+}

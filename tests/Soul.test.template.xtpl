@@ -1,0 +1,11 @@
+<x:tpl>
+	<div>
+		<span class="js-text">Hello, {{model->text}}!</span>
+		<input x:model="model->text" type="text"/>
+	</div>
+
+	<div>
+		<span class="js-checked">checkbox: {{model->checked ? 'yes' : 'no'}}</span>
+		<input x:model="model->checked" type="checkbox"/>
+	</div>
+</x:tpl>

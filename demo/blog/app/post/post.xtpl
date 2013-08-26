@@ -1,0 +1,16 @@
+// Page content
+h1 {
+	.post-back > a[href="#!{{ctx.backUrl || '/'}}"] > .pointerLeft {}
+	| {{ctx.model->title}}
+}
+
+.post__body {
+	div {
+		x-post-body: ctx.model->body
+	}
+
+	a.post__edit[href="#!{{ctx.router.getUrl('post-edit', ctx.model)}}"] {
+		style: "float: right"
+		| Edit
+	}
+}

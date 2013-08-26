@@ -1,0 +1,50 @@
+// Page content
+h1 {
+	a.add-post[href="#!{{ctx.router.getUrl('post-new')}}"] > .plus {}
+	| Soul, xtpl, Pilot, FileAPI и &hellip;
+}
+
+
+// Post list
+for post in ctx.collection.onPage {
+	.post {
+		class: { not-published: ctx.router.isAdmin && !post->published }
+
+		if ctx.router.isAdmin {
+			if post->published {
+				.post__unpublish { x-click: ctx.unpublishPost(post); }
+			}
+			else {
+				.post__publish { x-click: ctx.publishPost(post); }
+			}
+		}
+
+		h2.post__title > a[href="#!{{ctx.router.getUrl('post-view', post)}}"] | {{post->title}}
+
+		.post__body.compact {
+			x-post-body: post->body
+		}
+	}
+}
+
+
+
+ul.paginator {
+	for i in ctx.getPages() {
+		li > a {
+			class: {
+				selected: i == ctx.getCurrentPage()
+			}
+			href: i != ctx.getCurrentPage() ? "#!/"+ctx.router.blogName+"/offset/"+i*ctx.LIMIT : null
+			| {{i + 1}}
+		}
+	}
+}
+
+br {}
+
+//if ctx.router.blogName == "main" {
+//	a[href="#!/all/"] | all
+//} else {
+//	a[href="#!/"] | main
+//}

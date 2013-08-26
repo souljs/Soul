@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<title>Soul • Chat</title>
+	<link rel="stylesheet" href="./bootstrap.min.css"/>
+	<style>
+		.msg { margin-bottom: 5px; }
+			.msg__author {
+				font-weight: bold;
+			}
+
+			.msg__body {
+			}
+				.msg__body_sys {
+					color: #666;
+					text-align: center;
+				}
+
+		.overlay {
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 900;
+			position: fixed;
+			opacity: .6;
+			background: #000;
+		}
+
+		.layer {
+			top: 45%;
+			left: 50%;
+			width: 400px;
+			height: 450px;
+			margin: -240px 0 0 -215px;
+			padding: 15px;
+			z-index: 1000;
+			position: fixed;
+			box-shadow: 0 0 5px rgba(0,0,0,.6);
+			background-color: #fff;
+		}
+			.layer .btn {
+				margin-top: -10px;
+			}
+
+		#chat {
+			margin: 30px auto;
+			max-width: 800px;
+		}
+	</style>
+</head>
+<body>
+
+	<script id="chat" type="text/xtpl">
+		&btn = input.btn {
+			class: "btn-{{ctx.mod}}"
+
+			type: ctx.type || "submit"
+			value: ctx.value
+		}
+
+		// MAIN PAGE
+		#chat {
+			// New User
+			if model.authUser.isNew() {
+				h1 | Hello {{model.authUser->name || '%username%'}}!
+				form.well.form-search {
+					x-submit: ctx.saveUser()
+
+					input.input-xlarge[placeholder="You name"][type="text"] {
+						x-model: model.authUser->name
+						x-autofocus: true
+					}
+					| &nbsp;
+					&btn { value: "Enter", mod: "success" }
+				}
+			}
+			else {
+				// Auth user
+				h2 | Welcome to Soul • Chat, {{model.authUser->name}}!
+
+				.row[style="margin-top: 20px"] {
+					.span3 > ul {
+						for user in collection.users {
+							li {
+								if user.id == model.authUser.id {
+									span | {{user->name}}
+								}
+								else {
+									a {
+										href: "#!/private/"+user.id+"/"
+										span | {{user->name}}
+									}
+								}
+
+								if user.cnt("all") > 0 {
+									span | &nbsp; {{user.cnt('unread')}}/{{user.cnt('all')}}
+								}
+							}
+						}
+					}
+
+					.span7 {
+						.well {
+							x-scroll2bottom: collection.messages.length;
+
+							for msg in collection.messages {
+								.msg {
+									if msg->type == 1 {
+										.msg__body.msg__body_sys | {{msg.getFromUser()->name}} вошел в чат.
+									}
+									else {
+										span.msg__author | {{msg.getFromUser()->name}}: |
+										span.msg__body | {{msg->body}}
+									}
+								}
+							}
+						}
+
+						form.well.form-search {
+							x-submit: ctx.addMessage()
+							input.input-xlarge[type="text"][placeholder="Enter message"] {
+								x-model: model.newMsg->body
+								x-autofocus: model.newMsg.get("body") == "" && !model.toUser
+							}
+							| &nbsp;
+							&btn { value: "Add", mod: "primary" }
+						}
+					}
+				}
+			}
+		}
+
+		// Private layer
+		if model.toUser != null {
+			.overlay { x-click: ctx.closePrivateDialog() }
+			.layer {
+				h3 | Private to {{model.toUser->name}}
+
+				.well[style="height: 300px; overflow: hidden;"] {
+					x-scroll2bottom: collection.private.length
+					for msg in collection.private | ctx.filterPrivateMsg {
+						.msg {
+							span.msg__author | {{msg.getFromUser()->name}}
+							| : |
+							span.msg__body | {{msg->body}}
+						}
+					}
+				}
+
+				form {
+					x-submit: ctx.sendPrivateMsg()
+					input.input-large[type="text"][placeholder="Enter private message"] {
+						x-model: model.privateMsg->body
+						x-autofocus: model.privateMsg.get("body") == ""
+					}
+					| &nbsp;
+					&btn { value: "Send", mod: "danger" }
+				}
+			}
+		}
+	</script>
+
+	<script src="../../bin/node_modules/faye/browser/faye-browser-min.js"></script>
+	<script src="../../dist/Soul.dev.js"></script>
+	<script src="./chat.app.js"></script>
+
+</body>
+</html>

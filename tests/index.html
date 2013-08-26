@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Soul :: tests</title>
+
+	<!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+	<script src="http://code.jquery.com/qunit/qunit-git.js"></script>
+	<link href="http://code.jquery.com/qunit/qunit-git.css" rel="stylesheet"/-->
+
+	<script>
+		if( !window.jQuery ){
+			document.write('<script src="/js/jquery.dev.js"><'+'/script>');
+			document.write('<script src="/js/qunit/qunit.js"><'+'/script>');
+			document.write('<link href="/js/qunit/qunit.css" rel="stylesheet"/>');
+		}
+	</script>
+
+	<script src="/js/Pilot.js"></script>
+	<script src="/js/xtpl.min.js"></script>
+	<script src="../bin/node_modules/faye/browser/faye-browser-min.js"></script>
+
+	<script src="../lib/Soul.js"></script>
+
+	<script>
+		Pilot.utils.each(['', 'defer', 'http', 'Emitter', 'Model', 'Collection', 'Storage', 'Tabs', 'Hub'], function (name){
+			if( name ){
+				name = '.' + name;
+			}
+			document.write('<script src="../lib/Soul'+ name +'.js"><'+'/script>');
+		});
+	</script>
+
+	<script src="Soul.defer.test.js"></script>
+	<script src="Soul.test.js"></script>
+</head>
+<body>
+
+	<h1 id="qunit-header">Soul :: tests</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+	<div id="LEGO"></div>
+
+	<div id="xtpl-file"></div>
+	<div id="xtpl-html">
+		<ul>
+			<x:each data="[1,2,3]" as="val">
+				<li>{{val}}</li>
+			</x:each>
+		</ul>
+	</div>
+
+
+	<x:btn click="ctx.sendForm();">Send</x:btn>
+
+	<x:define name="btn">
+		<span><x:param get="content"/></span>
+		<input type="{{attrs.type}}"/>
+	</x:define>
+
+
+	<x:dropdown>
+		{ ctrl: "Move to", items: [] }
+	</x:dropdown>
+
+
+	<x:decl class="b-dropdown">
+		<x:__ctrl x:click="->toggle" x:data="ctx.ctrl"/>
+		<ul x:if="attrs.expanded" role="menu" class="__list">
+			<x:each bind="ctx.items" as="item">
+				<li class="__item" x:data="item" />
+			</x:each>
+		</ul>
+	</x:decl>
+
+
+	<x:decl class="b-dropdown__list__item">
+		<x:attr name="role" value="menutime"/>
+		<x:mod name="type" select="ctx.type"/>
+		<x:mod name="selected" test="ctx.id === $root.selected"/>
+		<x:content data="ctx"/>
+	</x:decl>
+
+
+	<x:define name="dropdown-folders" extends="dropdown">
+		<x:override name="__item">
+			@mods-type = item->type;
+			@mods-disabled = item.id === ctx.active && ctx.active.id;
+			{{item->title}}
+		</x:override>
+	</x:define>
+
+
+
+	&define "b-dropdown" {
+		data: {
+			group: ctx.group
+			mnemo: ctx.mnemo || ctx.group
+		}
+
+		&__list {
+			for item in ctx.items {
+				if item == 'hr' || item == '_'
+					&__hr
+				else
+					&__item item
+			}
+		}
+	}
+
+
+	&define b-dropdown__list__item {
+		mods: {
+			"selected": ctx.id == $block.selected
+		}
+
+		context: ctx.text
+	}
+
+
+	&define "b-dropdown-folders" extends "b-dropdown" {
+		&override "__list__item" {
+			mods: {
+				"disabled": ctx.id == $block.selected && $block.selected.id
+			}
+
+			content: ctx->title
+		}
+	}
+
+
+	<div>
+		<x:use block="dropdown-folders">
+			mods:	"cbx"
+			ctrl:	"Move to"
+			items:	collection.folders
+			active: model.activeFolder
+		</x:use>
+	</div>
+
+
+	<script>
+		xtpl.tags.ctrl('dropdown', {
+			'->toggle': function (evt){
+				var expanded = !this.ctx.expanded;
+				this.getItems(expanded, function (items){
+					evt.ctx.items = items;
+					evt.ctx.expanded = expanded;
+					this[expanded ? 'onOutside' : 'offOutside']('click', '->toggle');
+					this.$apply();
+				});
+			},
+
+			getItems: function (force, done){
+				var items = !force && this.ctx.getItems ? this.ctx.getItems() : this.ctx.items;
+				done(items);
+			}
+		});
+	</script>
+
+</body>
+</html>

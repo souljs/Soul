@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Soul :: tests</title>
+
+	<!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+	<script src="http://code.jquery.com/qunit/qunit-git.js"></script>
+	<link href="http://code.jquery.com/qunit/qunit-git.css" rel="stylesheet"/-->
+
+	<script>
+		if( !window.jQuery ){
+			document.write('<script src="/js/jquery.dev.js"><'+'/script>');
+			document.write('<script src="/js/qunit/qunit.js"><'+'/script>');
+			document.write('<link href="/js/qunit/qunit.css" rel="stylesheet"/>');
+		}
+	</script>
+
+	<script src="/js/Pilot.js"></script>
+	<script src="/js/xtpl.min.js"></script>
+	<script src="../bin/node_modules/faye/browser/faye-browser-min.js"></script>
+
+	<script>
+		Pilot.utils.each(['', 'defer', 'http', 'Emitter', 'Model', 'Collection', 'Storage', 'Tabs', 'Hub'], function (name){
+			if( name ){
+				name = '.' + name;
+			}
+			document.write('<script src="../lib/Soul'+ name +'.js"><'+'/script>');
+		});
+	</script>
+</head>
+<body>
+
+	<script>
+		(function (){
+			var scope = {
+				collection: Soul.getCollection('sync')
+			};
+			window.parent['_SoulSyncNext'](scope);
+		})();
+	</script>
+
+</body>
+</html>

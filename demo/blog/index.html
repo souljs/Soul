@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+	<title>Soul • Blog</title>
+
+	<meta name="keywords" content=""/>
+	<meta name="description" content=""/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+	<link href='http://fonts.googleapis.com/css?family=Wire+One' rel='stylesheet' type='text/css'/>
+
+	<link rel="stylesheet" href="main.css"/>
+</head>
+<body>
+
+
+	<div id="loading">Loading...</div>
+
+	<script id="main" type="text/xtpl">
+		// Button
+		&btn = button.btn {
+			class: "btn_{{ctx.type || 'submit'}}"
+			type: ctx.type || "submit"
+			| {{ctx.value}}
+		}
+
+		// Input
+		&inp = .inp {
+			input[type="text"] {
+				x-model: ctx.value
+				x-autofocus: ctx.autofocus
+				name: (ctx.name || "").toLowerCase()
+				placeholder: ctx.label || ctx.name
+				autocomplete: ctx.suggest
+			}
+		}
+
+
+		if !Soul.User.isAuth() {
+			.not-auth {
+				if ctx.request.path == "/" {
+					a[href="#!{{ctx.router.getUrl('login')}}"] | Login
+					a[href="#!{{ctx.router.getUrl('signup')}}"] | Sign up
+				} else {
+					a[href="#!/"] | Home
+				}
+			}
+		}
+
+		// Auth user informer
+		.auth-user {
+			class: { unactive: !Soul.User.isAuth() }
+			.auth-user__photo > img[src="{{Soul.User.current()->photo_url}}"] {}
+			a.auth-user__name[href=""] | {{Soul.User.current()->name}}
+		}
+
+
+		// Auth form
+		.auth-holder {
+			x-view { id: "login" }
+			x-view { id: "signup" }
+			x-view { id: "forgot" }
+		}
+
+
+		div[style="height: 30px;"] {}
+
+
+		// Pages
+		.content {
+			x-view { id: "index" }
+			x-view { id: "post-new" }
+			x-view { id: "post-view" }
+			x-view { id: "post-edit" }
+		}
+
+
+		div[style="height: 60px;"] {}
+	</script>
+
+
+	<script src="../../dist/Soul.boot.js"></script>
+	<script data-main="./app/" src="/js/require.js"></script>
+	<script src="//yandex.st/highlightjs/7.2/highlight.min.js"></script>
+
+
+	<script>
+		(function (color, width, height, opacity){
+			var canvas	= document.createElement("canvas");
+			var context	= canvas.getContext("2d");
+
+			canvas.width	= width;
+			canvas.height	= height;
+
+			for( var i = 0; i < width; i++ ){
+				for( var j = 0; j < height; j++ ){
+					var val = Math.floor(Math.random() * 255);
+					context.fillStyle = "rgba(" + val + "," + val + "," + val + "," + opacity + ")";
+					context.fillRect(i, j, 1, 1);
+				}
+			}
+
+			document.body.style.backgroundColor = color;
+			document.body.style.backgroundImage = 'url('+canvas.toDataURL('image/png')+')';
+		})('#F4F5EC', 50, 50, 0.02);
+
+
+		Soul.xtpl.decl('x-view', {
+			compile: function (node){
+				node.parent.append(node.create('div', { 'data-soul-view-id': node.attrs.id.replace(/['"]/g, '') }), node);
+				node.remove();
+			}
+		});
+
+
+		Soul.use(['app'], function (app){
+			app.run();
+			window.app = app;
+		});
+
+		$(document).on('focusin focusout', '.inp', function (evt){
+			$(this).toggleClass('inp_focus', evt.type === 'focusin');
+		});
+	</script>
+
+
+
+	<!--script src="http://www.parsecdn.com/js/parse-1.2.9.min.js"></script>
+	<script>
+		Parse.initialize("zm7HTaHs6pEy4L8T1RBqiblLFEytpmZnhL2oIL4V", "Q4bjVWfE8hV2jMlejPIdshinPrSdQNsKTwAQfhyL");
+		// By specifying no write privileges for the ACL, we can ensure the role cannot be altered.
+		var roleACL = new Parse.ACL();
+		roleACL.setPublicReadAccess(true);
+		var role = new Parse.Role("admin", roleACL);
+		role.getUsers().add(new Parse.User(Soul.User.current().toJSON()));
+		role.save();
+	</script-->
+
+
+</body>
+</html>

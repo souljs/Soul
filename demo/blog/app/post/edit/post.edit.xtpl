@@ -1,0 +1,41 @@
+if ctx.model.id {
+	h1 | Edit post
+} else {
+	h1 | Compose post
+}
+
+
+form.compose {
+	x-reset: ctx.onCancel();
+	x-submit: ctx.onSave();
+
+
+	// Title
+	.compose__field {
+		&inp {
+			label: "Title"
+			x-autofocus: ctx.autofocus
+			x-value: ctx.model->title
+		}
+	}
+
+
+	// Body
+	.compose__field {
+		.inp > textarea[style="height: 360px;"] {
+			x-model: ctx.model->body
+		}
+	}
+
+
+	// Buttons
+	.foot {
+		div[style="width: 30%; float: right;"] {
+			&btn { type: "reset", value: "Cancel" }
+		}
+
+		div[style="width: 40%;"] {
+			&btn { type: "submit", value: "Save" }
+		}
+	}
+}
