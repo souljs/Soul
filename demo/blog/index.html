@@ -119,7 +119,7 @@
 
 
 		Soul.use(['app'], function (app){
-			app.run();
+			app.run(location.toString().split('#!')[1] || '/');
 			window.app = app;
 		});
 
