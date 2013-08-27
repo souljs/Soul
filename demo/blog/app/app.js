@@ -13,6 +13,12 @@ Soul.define(['access', 'xtpl/post-body', './mock'], function (){
 		},
 
 		'/:userId?': {
+			paramsRules: {
+				userId: function (id){
+					return !/login|signup|forgot/.test(id);
+				}
+			},
+
 			loadData: function (req){
 				this.router.blogId = req.params.userId || 'main';
 				this.router.isAdmin = Soul.User.current() && Soul.User.current().id == ADMIN_ID;
@@ -26,7 +32,7 @@ Soul.define(['access', 'xtpl/post-body', './mock'], function (){
 
 			// Post group
 			'/post/': {
-				404: {
+				'404': {
 					accessPermission: false,
 					accessDeniedRedirectTo: 'index'
 				},
@@ -49,7 +55,7 @@ Soul.define(['access', 'xtpl/post-body', './mock'], function (){
 					accessPermission: 'auth',
 					accessDeniedRedirectTo: 'post-view'
 				}
-			},
+			}
 		},
 
 		// Auth group
