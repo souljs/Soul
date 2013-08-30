@@ -35,7 +35,7 @@ ul.paginator {
 			class: {
 				selected: i == ctx.getCurrentPage()
 			}
-			href: i != ctx.getCurrentPage() ? "#!/"+ctx.router.blogName+"/offset/"+i*ctx.LIMIT : null
+			href: i != ctx.getCurrentPage() ? "#!/"+ctx.router.blogId+"/offset/"+i*ctx.LIMIT : null
 			| {{i + 1}}
 		}
 	}
