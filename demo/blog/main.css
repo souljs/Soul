@@ -389,8 +389,10 @@ form {
 	position: relative;
 	margin-bottom: 50px;
 	box-shadow: 0 1px 1px rgba(0,0,0,.2);
+	border-radius: 2px;
 }
 	.post__title {
+		border-radius: 2px 2px 0 0;
 		margin: 0;
 		padding: 8px 20px 10px;
 		font-size: 26px;
@@ -401,9 +403,11 @@ form {
 		padding: 20px 20px;
 		overflow: auto;
 		background-color: rgba(255,255,255,.9);
+		border-radius: 2px;
 	}
 		.post__body.compact {
 			max-height: 400px;
+			border-radius: 0 0 2px 2px;
 		}
 
 	.not-published {
