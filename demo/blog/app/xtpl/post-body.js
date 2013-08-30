@@ -8,6 +8,7 @@ Soul.define(function (){
 			})
 			.replace(/\b(https?:\/\/[^'"\s]+)/g, '<a href="$1">$1</a>')
 			.replace(/\n/g, '<br/>')
+			.replace(/\s\s\s/, ' &nbsp; ')
 		;
 
 		el.innerHTML = code;
