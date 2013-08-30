@@ -32,6 +32,7 @@
 				x-model: ctx.value
 				x-autofocus: ctx.autofocus
 				name: (ctx.name || "").toLowerCase()
+				type: (ctx.type || "text")
 				placeholder: ctx.label || ctx.name
 				autocomplete: ctx.suggest
 			}

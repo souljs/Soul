@@ -15,7 +15,7 @@ Soul.define(function (){
 		},
 
 		defaults: {
-			  user_id: 0
+			  user_id: ''
 			, published: 0
 			, title: ''
 			, body: ''

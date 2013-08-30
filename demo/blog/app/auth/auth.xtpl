@@ -50,7 +50,7 @@
 
 		fieldset {
 			&inp { name: "Email", x-value: model.email, autofocus: true }
-			&inp { name: "Password", x-value: model.password }
+			&inp { name: "Password", x-value: model.password, type: "password"  }
 		}
 
 		.foot {
