@@ -49,12 +49,8 @@ Soul.define(function (){
 			return	Math.ceil(this.collection.all.length / LIMIT);
 		},
 
-		publishPost: function (post){
-			post.set('published', 1).save();
-		},
-
-		unpublishPost: function (post){
-			post.set('published', 0).save();
+		togglePublishPost: function (post){
+			post.set('published', +!post.get('published')).save();
 		}
 	});
 });

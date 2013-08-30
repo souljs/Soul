@@ -11,11 +11,12 @@ for post in ctx.collection.onPage {
 		class: { not-published: ctx.router.isAdmin && !post->published }
 
 		if ctx.router.isAdmin {
-			if post->published {
-				.post__unpublish { x-click: ctx.unpublishPost(post); }
-			}
-			else {
-				.post__publish { x-click: ctx.publishPost(post); }
+			div {
+				class: {
+					post__publish: !post->published
+					post__unpublish: post->published
+				}
+				x-click: ctx.togglePublishPost(post);
 			}
 		}
 
