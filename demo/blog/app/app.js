@@ -5,7 +5,7 @@ Soul.define(['access', 'xtpl/post-body', './mock'], function (){
 	var ADMIN_ID = 'D1tEI7LdMI';
 
 
-	return Soul.create({ useHistory: true },{
+	return Soul.create({ useHistory: true }, {
 		el: '#main',
 
 		init: function (){

@@ -10,7 +10,7 @@ Soul.define(function (){
 
 		collection: {
 			// All posts
-			all: function (params){
+			all: function (){
 				var query = { order: '-createdAt' };
 
 				if( this.router.blogId == 'main' ){

@@ -21,7 +21,7 @@
 	<script id="main" type="text/xtpl">
 		// Button
 		&btn = button.btn {
-			class: "btn_{{ctx.type || 'submit'}}"
+			class: "btn_{{ctx.type || 'submit'}} {{ctx.mods}}"
 			type: ctx.type || "submit"
 			| {{ctx.value}}
 		}
@@ -53,7 +53,7 @@
 		// Auth user informer
 		.auth-user {
 			class: { unactive: !Soul.User.isAuth() }
-			.auth-user__photo > img[src="{{Soul.User.current()->photo_url}}"] {}
+			.userpic.auth-user__photo > img[src="{{Soul.User.current()->photo_url}}"] {}
 			a.auth-user__name[href=""] | {{Soul.User.current()->name}}
 		}
 
@@ -111,14 +111,6 @@
 		})('#F4F5EC', 50, 50, 0.02);
 
 
-		Soul.xtpl.decl('x-view', {
-			compile: function (node){
-				node.parent.append(node.create('div', { 'data-soul-view-id': node.attrs.id.replace(/['"]/g, '') }), node);
-				node.remove();
-			}
-		});
-
-
 		Soul.use(['app'], function (app){
 			app.run(location.toString().split('#!')[1] || '/');
 			window.app = app;
@@ -134,12 +126,20 @@
 	<!--script src="http://www.parsecdn.com/js/parse-1.2.9.min.js"></script>
 	<script>
 		Parse.initialize("zm7HTaHs6pEy4L8T1RBqiblLFEytpmZnhL2oIL4V", "Q4bjVWfE8hV2jMlejPIdshinPrSdQNsKTwAQfhyL");
-		// By specifying no write privileges for the ACL, we can ensure the role cannot be altered.
-		var roleACL = new Parse.ACL();
-		roleACL.setPublicReadAccess(true);
-		var role = new Parse.Role("admin", roleACL);
-		role.getUsers().add(new Parse.User(Soul.User.current().toJSON()));
-		role.save();
+
+//		var user = new Parse.User;
+//		var comment = new (Parse.Object.extend('comment'));
+//
+//		user.id = 'D1tEI7LdMI';
+//
+//		comment.save({
+//			user: user,
+//			post_id: 'V449DBokZo'
+//		});
+
+		var query = new Parse.Query('comment');
+		query.include('user');
+		query.find();
 	</script-->
 
 

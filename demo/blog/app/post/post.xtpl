@@ -4,7 +4,7 @@ h1 {
 	| {{ctx.model->title}}
 }
 
-.post__body {
+.post > .post__body {
 	div {
 		x-post-body: ctx.model->body
 	}
@@ -14,3 +14,5 @@ h1 {
 		| Edit
 	}
 }
+
+x-subview { id: "comments" }
