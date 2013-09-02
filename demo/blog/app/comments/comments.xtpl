@@ -1,0 +1,35 @@
+.comments {
+	for comment in ctx.collection.models {
+		.comment {
+			.userpic > img { src: comment.getAuthor("photo_url") }
+			.comment__body | {{comment->body}}
+		}
+	}
+}
+
+
+.hr {}
+
+
+form.comment {
+	x-submit: ctx.onSave();
+
+	div {
+		style: "float: left;"
+		.userpic > img[src="{{Soul.User.current()->photo_url}}"] {}
+	}
+
+	div {
+		style: "margin-left: 80px";
+
+		.comment__field {
+			.inp > textarea[style="height: 80px;"] {
+				x-model: ctx.model.comment->body
+			}
+		}
+
+		.foot[style="width: 30%"] {
+			&btn { type: "submit", value: "Add comment", mods: "btn-sm" }
+		}
+	}
+}
