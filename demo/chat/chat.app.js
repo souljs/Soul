@@ -55,15 +55,15 @@
 		}
 	});
 
-	// Common chat messages
+	// Общии сообщения (чат)
 	Soul.getCollection('message').spec({
-		share: true,
+		share: true, // Расшарить между всеми юзерами (браузерами)
 		storage: 'runtime'
 	});
 
-	// Private messages
+	// Приватные сообщения между разными юзерами
 	Soul.getCollection('message.private').spec({
-		share: 'private',
+		share: 'private', // приватная коллекция
 		storage: 'runtime',
 		getSharedId: function (msg){
 			return	msg.getToUser().get('shared_id');
@@ -109,6 +109,7 @@
 		},
 
 		init: function (){
+			// Каждые 40sec обновляем свой стасус, чтобы быть в online
 			setInterval(function (){
 				var user = this.model.authUser;
 				if( !user.isNew() ){
@@ -117,6 +118,7 @@
 				}
 			}.bind(this), 40000);
 
+			// Слушатель события добавления приватного сообщения
 			this.collection.private.on('add', this, function (msg){
 				var user = msg.getFromUser(), model = this.model;
 				if( user.id !== model.authUser.id ){
@@ -132,12 +134,9 @@
 			});
 
 			if( !this.model.authUser.isNew() ){
+				// Отправить всем юзерам привествие
 				this.sendWelcomeMsg();
 			}
-		},
-
-		isOnlineUser: function (user){
-			return	new Date - user.get('last_ts') < 60000;
 		},
 
 		saveUser: function (){
@@ -147,6 +146,7 @@
 			}));
 		},
 
+		// Добавить сообщение в общий чат
 		addMessage: function (){
 			var model = this.model.newMsg;
 
@@ -166,26 +166,25 @@
 			}).save();
 		},
 
+		// Преход на страницу приватных сообщений
 		'/private/:userId/': function (req){
 			this.openPrivateDialog(req.params.userId);
 		},
 
+		// Открыть приватные сообщения
 		openPrivateDialog: function (userId){
 			var model = this.model;
 			model.toUser = this.collection.users.get(userId);
-			model.toUser.cnt('unread', 0);
+			model.toUser.cnt('unread', 0); // Сбросить счетчик непрочитанных у второго юзера
 		},
 
+		// Закрыть дилог
 		closePrivateDialog: function (){
 			this.model.toUser = null;
 			this.router.nav('/');
 		},
 
-		filterPrivateMsg: function (msg){
-			var fromId = msg.get('from_user_id'), toId = msg.get('to_user_id'), model = this.model;
-			return	fromId == model.toUser.id && toId == model.authUser.id || toId == model.toUser.id && fromId == model.authUser.id;
-		},
-
+		// Отправить приватное сообщение
 		sendPrivateMsg: function (){
 			var model = this.model, privateMsg = model.privateMsg;
 			privateMsg.clone()
@@ -193,6 +192,17 @@
 				.save()
 			;
 			privateMsg.clear();
+		},
+
+		// Фильтр: онлайн
+		isOnlineUser: function (user){
+			return	new Date - user.get('last_ts') < 60000;
+		},
+
+		// Фильтр: приватных сообщений
+		filterPrivateMsg: function (msg){
+			var fromId = msg.get('from_user_id'), toId = msg.get('to_user_id'), model = this.model;
+			return	fromId == model.toUser.id && toId == model.authUser.id || toId == model.toUser.id && fromId == model.authUser.id;
 		}
 	});
 
