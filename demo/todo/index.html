@@ -30,7 +30,7 @@
 							form {
 								x-submit: ctx.saveTodo(model.editTodo);
 								ul#todo-list {
-									for todo in collection | ctx.todoFilter {
+									for todo in collection.models | ctx.todoFilter {
 										li {
 											class: {
 												editing: model.editTodo === todo

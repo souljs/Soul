@@ -1,6 +1,6 @@
 (function (){
 	function include(src){
-		document.write('<script src="'+ src +'.js"><' + '/script>');
+		document.write('<script src="'+ src +'.js?'+Math.random()+'"><' + '/script>');
 	}
 
 
@@ -19,12 +19,12 @@
 		});
 
 
-		// include Soul libs
+		// Build Soul
 		forEach(['', 'defer', 'http', 'Emitter', 'Model', 'Collection', 'Storage', 'Tabs', 'Hub', 'User'], function (name){
 			if( name ){
 				name = '.' + name;
 			}
-			include('../../src/Soul'+ name);
+			include('/Soul/src/Soul'+ name);
 		});
 	}
 	else {

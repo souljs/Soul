@@ -82,7 +82,7 @@
 
 
 
-	var app = Soul.new({ useHistory: true }, {
+	var app = Soul.create({ useHistory: true }, {
 		el: '#chat',
 		boundAll: ['filterPrivateMsg'],
 

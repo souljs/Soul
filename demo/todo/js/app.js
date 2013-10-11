@@ -16,7 +16,7 @@
 	});
 
 
-	var app = Soul.new({ useHistory: true }, {
+	var app = Soul.create({ useHistory: true }, {
 		el: '#todos',
 		filter: 'all', // default
 		boundAll: ['todoFilter'],
