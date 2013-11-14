@@ -15,7 +15,7 @@ Soul.define(['access', 'xtpl/post-body', './mock'], function (){
 		'/:userId?': {
 			paramsRules: {
 				userId: function (id){
-					return !/login|signup|forgot/.test(id);
+					return !/login|signup|forgot|fun/.test(id);
 				}
 			},
 
@@ -78,6 +78,14 @@ Soul.define(['access', 'xtpl/post-body', './mock'], function (){
 			ctrl: Soul.use('auth'),
 			accessPermission: '!auth',
 			accessDeniedRedirectTo: '/'
+		},
+
+		// Fun zone
+		'/fun/': {
+			'/': {
+				id: 'fun',
+				tpl: './fun/fun.xtpl'
+			}
 		}
 	}).on('route', function (){
 		$('html,body').animate({ scrollTop: 0 }, 'fast');

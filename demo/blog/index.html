@@ -21,10 +21,13 @@
 	<script id="main" type="text/xtpl">
 		// Button
 		&btn = button.btn {
+			style: { margin-left: ctx.left+"px" }
 			class: "btn_{{ctx.type || 'submit'}} {{ctx.mods}}"
+			name: ctx.name
 			type: ctx.type || "submit"
 			| {{ctx.value}}
 		}
+
 
 		// Input
 		&inp = .inp {
@@ -50,11 +53,12 @@
 			}
 		}
 
+
 		// Auth user informer
 		.auth-user {
 			class: { unactive: !Soul.User.isAuth() }
 			.userpic.auth-user__photo > img[src="{{Soul.User.current()->photo_url}}"] {}
-			a.auth-user__name[href=""] | {{Soul.User.current()->name}}
+			a.auth-user__name[href="#!/"] | {{Soul.User.current()->name}}
 		}
 
 
@@ -75,6 +79,8 @@
 			x-view { id: "post-new" }
 			x-view { id: "post-view" }
 			x-view { id: "post-edit" }
+
+			x-view { id: "fun" }
 		}
 
 

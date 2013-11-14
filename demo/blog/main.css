@@ -75,6 +75,11 @@ a {
 	}
 
 
+ol {
+	line-height: 160%;
+}
+
+
 #loading {
 	top: 40%;
 	left: 50%;
@@ -484,10 +489,10 @@ form.comment {
 }
 
 
-.comment {
+div.comment {
 	margin-bottom: 30px;
 }
-	.comment:after {
+	div.comment:after {
 		clear: both;
 		display: block;
 		content: '';

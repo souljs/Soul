@@ -1,0 +1,48 @@
+h1 | Just for fun
+
+div {
+	p | Друзья, я предлагаю вам обучающую игру.
+
+	div {
+		| Суть её проста: есть микроскопическая задача, она не сложная. |
+		| Вы её делеате и отправляете мне, а взамен получаете отзыв |
+		| (хорошо — если хорошо, либо что и где можно улучшить). |
+		| По ходу выполнения задания, я буду его усложнять.
+	}
+
+	p | Помимо этого вы можете  посмотреть код других участников и написать им коменты.
+
+	p | Все действия анонимны!
+	br {}
+
+
+	// Задание
+	div {
+		x-show: ctx.section == "task"
+
+		h2 | Сделаешь dropdown, а?
+		ol {
+			li | Верстка <a href="http://jsfiddle.net/RubaXa/36mDY/">http://jsfiddle.net/RubaXa/36mDY/</a> (форкните перед выполнением)
+			li | Можно использовать jQuery, но за читсый JS бонус
+			li | Это должен быть dropdown вашей мечты, так что функционал на ваш фкус
+			li | По завершению задачи, пришлите <a href="mailto:ibnRubaXa@gmail.com?subject=Just for fun">мне</a> ссылку на код
+		}
+	}
+
+
+	// Ссылки
+	div {
+		x-show: ctx.section == "links";
+		h2 | Увы, тут пусто, но!
+		p | Отправь мне <a href="mailto:ibnRubaXa@gmail.com?subject=Just for fun">письмо</a>, я никогда тебя не забуду.
+	}
+
+
+	form[style="text-align: center"] {
+		x-click: ctx.section = evt.target.name;
+		x-hide: ctx.section;
+
+		&btn { name: "task", value: "Уиии, давай задание!" }
+		&btn { name: "links", value: "Буду коментатором", left: 50 }
+	}
+}
