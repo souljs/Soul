@@ -32,7 +32,7 @@
 			  '//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min'
 			, '//rubaxa.github.io/Pilot/Pilot'
 			, '//xtpl.ru/js/xtpl.min'
-			, '../../dist/Soul.client.min'
+			, '//souljs.github.io/Soul/dist/Soul.client.min'
 		], function (src){
 			include(src);
 		});

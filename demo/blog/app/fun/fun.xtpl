@@ -18,7 +18,7 @@ div {
 
 	// Задание
 	div {
-		x-show: ctx.section == "task"
+		x-show: ctx.step == "task"
 
 		h2 | Сделаешь dropdown, а?
 		ol {
@@ -30,19 +30,40 @@ div {
 	}
 
 
-	// Ссылки
+	// Подписка
 	div {
-		x-show: ctx.section == "links";
-		h2 | Увы, тут пусто, но!
-		p | Отправь мне <a href="mailto:ibnRubaXa@gmail.com?subject=Just for fun">письмо</a>, я никогда тебя не забуду.
+		x-show: ctx.step == "subscribe";
+
+		form.compose {
+			x-reset: ctx.step = "";
+			x-submit: ctx.onSubsribe();
+
+			.compose__field > &inp {
+				label: "Твой e-mail"
+				x-value: ctx.subscribeEmail
+				x-autofocus: ctx.step == "subscribe"
+			}
+
+			.foot {
+				.right > &btn { value: "Я передумал", type: "reset" }
+				.left > &btn { value: "Записывай" }
+			}
+		}
+	}
+
+
+	// Подписка: завершена
+	h2 {
+		x-show: ctx.step == "subscribe.done";
+		| Готово!
 	}
 
 
 	form[style="text-align: center"] {
-		x-click: ctx.section = evt.target.name;
-		x-hide: ctx.section;
+		x-click: ctx.step = evt.target.name;
+		x-hide: ctx.step;
 
 		&btn { name: "task", value: "Уиии, давай задание!" }
-		&btn { name: "links", value: "Буду коментатором", left: 50 }
+		&btn { name: "subscribe", value: "Буду коментатором", left: 50 }
 	}
 }

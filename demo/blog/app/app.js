@@ -84,7 +84,7 @@ Soul.define(['access', 'xtpl/post-body', './mock'], function (){
 		'/fun/': {
 			'/': {
 				id: 'fun',
-				tpl: './fun/fun.xtpl'
+				ctrl: Soul.use('fun')
 			}
 		}
 	}).on('route', function (){
